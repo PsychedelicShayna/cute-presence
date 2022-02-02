@@ -1,0 +1,11 @@
+/*
+
+!.gitignore
+!README.md
+!LICENSE
+
+!source/
+!dependencies/
+
+!*.pro
+*!.in
