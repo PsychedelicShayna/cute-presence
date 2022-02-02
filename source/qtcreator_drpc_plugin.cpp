@@ -208,7 +208,7 @@ void QtCreatorDRPCPlugin::disconnectSyncSignals() {
 }
 
 void QtCreatorDRPCPlugin::initializeControlMenu() {
-    Core::ActionContainer* drpc_control_menu { Core::ActionManager::createMenu(GLOBAL_DRPC_MENU_ID) };
+    Core::ActionContainer* drpc_control_menu { Core::ActionManager::createMenu(GLOBAL_DRPC_CONTROL_MENU_ID) };
     drpc_control_menu->menu()->setTitle("Discord RPC");
 
     QAction* drpc_control_start_action { new QAction { "Start Discord RPC", this } };
@@ -216,13 +216,13 @@ void QtCreatorDRPCPlugin::initializeControlMenu() {
 
     Core::Command* drpc_control_start_command {
         Core::ActionManager::registerAction(drpc_control_start_action,
-                                            GLOBAL_DRPC_START_ACTION_ID,
+                                            GLOBAL_DRPC_CONTROL_MENU_START_ACTION_ID,
                                             Core::Context { Core::Constants::C_GLOBAL })
     };
 
     Core::Command* drpc_control_stop__command {
         Core::ActionManager::registerAction(drpc_control_stop_action,
-                                            GLOBAL_DRPC_STOP_ACTION_ID,
+                                            GLOBAL_DRPC_CONTROL_MENU_STOP_ACTION_ID,
                                             Core::Context { Core::Constants::C_GLOBAL })
     };
 
@@ -242,7 +242,7 @@ bool QtCreatorDRPCPlugin::initialize(const QStringList& arguments, QString* erro
     Q_UNUSED(arguments)
     Q_UNUSED(error_string)
 
-    initializeDiscordRichPresence(GLOBAL_APPLICATION_ID);
+    initializeDiscordRichPresence(GLOBAL_DISCORD_APPLICATION_ID);
     initializeControlMenu();
     connectSyncSignals();
 

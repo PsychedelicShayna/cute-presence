@@ -1,31 +1,25 @@
 #ifndef QTCREATOR_DRPC_PLUGIN_HPP
 #define QTCREATOR_DRPC_PLUGIN_HPP
 
-// #if defined(QT_CREATOR_DRPC_LIBRARY)
-// #define QT_CREATOR_DRPC_SHARED_EXPORT Q_DECL_EXPORT
-// #else
-// #define QT_CREATOR_DRPC_SHARED_EXPORT Q_DECL_IMPORT
-// #endif
-
-#include <extensionsystem/iplugin.h>
-
 #include <coreplugin/actionmanager/actioncontainer.h>
 #include <coreplugin/actionmanager/actionmanager.h>
 #include <coreplugin/actionmanager/command.h>
-#include <QtWidgets/QAction>
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QMessageBox>
 
 #include <coreplugin/editormanager/editormanager.h>
 #include <coreplugin/editormanager/ieditor.h>
 
 #include <coreplugin/coreconstants.h>
-
 #include <coreplugin/icontext.h>
 #include <coreplugin/icore.h>
 
+#include <extensionsystem/iplugin.h>
+
 #include <projectexplorer/projecttree.h>
 #include <projectexplorer/project.h>
+
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QMenu>
 
 #include <functional>
 #include <iostream>
@@ -35,10 +29,11 @@
 
 namespace QtCreatorDRPC {
 
-constexpr const char* GLOBAL_APPLICATION_ID          { "937400240473006092"         };
-constexpr const char* GLOBAL_DRPC_MENU_ID            { "QtCreatorDRPC.Menu"         };
-constexpr const char* GLOBAL_DRPC_START_ACTION_ID    { "QtCreatorDRPC.ActionStart" };
-constexpr const char* GLOBAL_DRPC_STOP_ACTION_ID     { "QtCreatorDRPC.ActionStop"  };
+constexpr const char* GLOBAL_DRPC_CONTROL_MENU_ID                 { "QtCreatorDRPC.Menu"         };
+constexpr const char* GLOBAL_DRPC_CONTROL_MENU_START_ACTION_ID    { "QtCreatorDRPC.Action.Start" };
+constexpr const char* GLOBAL_DRPC_CONTROL_MENU_STOP_ACTION_ID     { "QtCreatorDRPC.Action.Stop"  };
+
+constexpr const char* GLOBAL_DISCORD_APPLICATION_ID               { "937400240473006092"         };
 
 class QDiscordRichPresence {
 public:
