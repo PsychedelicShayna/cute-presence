@@ -51,34 +51,39 @@ QDiscordRichPresence::QDiscordRichPresence()
 }
 
 const QMap<QString, QtCreatorDRPCPlugin::RichPresenceFileDescriptor> QtCreatorDRPCPlugin::mimeTypeToRpcFileDescriptorMap = {
-    {"text/x-c++src"                             ,{ "cppurple"    ,"C++ Source File"           ,"Editing"     } },
-    {"text/x-c++hdr"                             ,{ "cppurple"    ,"C++ Header File"           ,"Editing"     } },
+    {"text/x-c++src"                             ,{ "cxx"         ,"C++ Source File"           ,"Editing"     } },
+    {"text/x-c++hdr"                             ,{ "cxx"         ,"C++ Header File"           ,"Editing"     } },
     {"text/x-csrc"                               ,{ "c"           ,"C Source File"             ,"Editing"     } },
     {"text/x-chdr"                               ,{ "c"           ,"C Header File"             ,"Editing"     } },
+    {"text/x-csharp"                             ,{ "csharp"      ,"C# Source File"            ,"Editing"     } },
     {"text/x-python"                             ,{ "python"      ,"Python Script"             ,"Editing"     } },
     {"application/x-ruby"                        ,{ "ruby"        ,"Ruby Script"               ,"Editing"     } },
-    {"text/x-rust"                               ,{ "rust"        ,"Rust Source File"          ,"Editing"     } },
+    {"text/rust"                                 ,{ "rust"        ,"Rust Source File"          ,"Editing"     } },
     {"text/x-lua"                                ,{ "lua"         ,"Lua Script"                ,"Editing"     } },
     {"text/css"                                  ,{ "css"         ,"CSS Stylesheet"            ,"Editing"     } },
     {"text/qss"                                  ,{ "qss"         ,"QSS Stylesheet"            ,"Editing"     } },
-    {"text/x-javascript"                         ,{ "js"          ,"JavaScript File"           ,"Editing"     } },
+    {"application/javascript"                    ,{ "js"          ,"JavaScript File"           ,"Editing"     } },
     {"text/x-java"                               ,{ "java"        ,"Java Class"                ,"Editing"     } },
     {"text/x-qml"                                ,{ "qml"         ,"QtQuick QML File"          ,"Editing"     } },
     {"text/x-qt.ui+qml"                          ,{ "qml"         ,"QtQuick QML UI File"       ,"Designing"   } },
-    {"application/octet-stream"                  ,{ "bin"         ,"Binary Data"               ,"Inspecting"  } },
+    {"application/octet-stream"                  ,{ "binary"      ,"Binary Data"               ,"Inspecting"  } },
+    {"text/x-asm"                                ,{ "asm"         ,"Assembly Instructions"     ,"Editing"     } },
+    {"text/x-asminfo"                            ,{ "asminfo"     ,"Preprocessed C/C++ File"   ,"Editing"     } },
     {"application/vnd.qt.qmakeprofile"           ,{ "qt"          ,"QMake Project File"        ,"Configuring" } },
     {"application/vnd.qt.qmakeproincludefile"    ,{ "qt"          ,"QMake Include File"        ,"Editing"     } },
     {"application/vnd.qt.qmakeprostashfile"      ,{ "qt"          ,"QMake Stash File"          ,"Editing"     } },
     {"text/x-cmake-project"                      ,{ "cmake"       ,"CMake Project File"        ,"Editing"     } },
-    {"text/x-makefile"                           ,{ "makefile"    ,"GNU Makefile"              ,"Editing"     } },
-    {"application/x-designer"                    ,{ "qtui"        ,"Qt User Interface File"    ,"Designing"   } },
-    {"application/vnd.qt.xml.resource"           ,{ "qtqrc"       ,"Qt Resource File"          ,"Editing"     } },
+    {"text/x-makefile"                           ,{ "gnu"         ,"GNU Makefile"              ,"Editing"     } },
+    {"text/gitignore"                            ,{ "git"         ,"Gitignore File"            ,"Configuring" } },
+    {"application/x-designer"                    ,{ "ui"          ,"Qt User Interface File"    ,"Designing"   } },
+    {"application/vnd.qt.xml.resource"           ,{ "qrc"         ,"Qt Resource File"          ,"Editing"     } },
     {"application/json"                          ,{ "json"        ,"JSON File"                 ,"Editing"     } },
     {"text/plain"                                ,{ "txt"         ,"Plain Text File"           ,"Editing"     } },
-    {"text/markdown"                             ,{ "markdown"    ,"Markdown Document"         ,"Editing"     } },
+    {"text/markdown"                             ,{ "markdown"    ,"Markdown Document"         ,"Writing"     } },
     {"text/html"                                 ,{ "html"        ,"HTML File"                 ,"Editing"     } },
     {"application/xml"                           ,{ "xml"         ,"XML File"                  ,"Editing"     } },
-    {"text/vnd.qtcreator.git.submit"             ,{ "git"         ,"Git Commit File"           ,"Editing"     } }
+    {"text/vnd.qtcreator.git.submit"             ,{ "git"         ,"Git Commit File"           ,"Editing"     } },
+    {"image/png"                                 ,{ "image"       ,"PNG Image"                 ,"Viewing"     } }
 };
 
 QMap<QString, QList<QPair<QList<QString>, QString>>> QtCreatorDRPCPlugin::MimeOverrider::MimeOverrideMap {
@@ -87,7 +92,9 @@ QMap<QString, QList<QPair<QList<QString>, QString>>> QtCreatorDRPCPlugin::MimeOv
     }},
 
     {"text/plain", {
-        {{".qss"}, "text/qss"}
+        { {".qss"},       "text/qss"       },
+        { {".gitignore"}, "text/gitignore" },
+        { {".i"},         "text/x-asminfo" }
     }}
 };
 
