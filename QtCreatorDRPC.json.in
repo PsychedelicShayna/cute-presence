@@ -1,0 +1,10 @@
+{
+    \"Name\" : \"QtCreatorDRPC\",
+    \"Version\" : \"0.0.1\",
+    \"CompatVersion\" : \"0.0.1\",
+    \"Vendor\" : \"PsychedelicShayna\",
+    \"Copyright\" : \"(C) PsychedelicShayna 2022\",
+    \"License\" : \"GNU General Public License v3.0\",
+    \"Description\" : \"Discord Rich Presence support for Qt Creator\",
+    \"Url\" : \"https://github.com/PsychedelicShayna/\"
+}

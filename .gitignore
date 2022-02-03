@@ -8,4 +8,4 @@
 !dependencies/
 
 !*.pro
-*!.in
+!*.in
