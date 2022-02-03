@@ -67,7 +67,7 @@ const QMap<QString, QtCreatorDRPCPlugin::RichPresenceFileDescriptor> QtCreatorDR
     {"text/x-qml"                                ,{ "qml"         ,"QtQuick QML File"          ,"Editing"     } },
     {"text/x-qt.ui+qml"                          ,{ "qml"         ,"QtQuick QML UI File"       ,"Designing"   } },
     {"application/octet-stream"                  ,{ "binary"      ,"Binary Data"               ,"Inspecting"  } },
-    {"text/x-asm"                                ,{ "asm"         ,"Assembly Instructions"     ,"Editing"     } },
+    {"text/x-asm"                                ,{ "asm"         ,"Assembly Source File"      ,"Editing"     } },
     {"text/x-asminfo"                            ,{ "asminfo"     ,"Preprocessed C/C++ File"   ,"Editing"     } },
     {"application/vnd.qt.qmakeprofile"           ,{ "qt"          ,"QMake Project File"        ,"Configuring" } },
     {"application/vnd.qt.qmakeproincludefile"    ,{ "qt"          ,"QMake Include File"        ,"Editing"     } },
