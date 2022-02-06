@@ -69,8 +69,8 @@ const QMap<QString, QtCreatorDRPCPlugin::RichPresenceFileDescriptor> QtCreatorDR
     {"application/octet-stream"                  ,{ "binary"      ,"Binary Data"               ,"Inspecting"  } },
     {"text/x-asm"                                ,{ "asm"         ,"Assembly Source File"      ,"Editing"     } },
     {"text/x-asminfo"                            ,{ "asminfo"     ,"Preprocessed C/C++ File"   ,"Editing"     } },
-    {"application/vnd.qt.qmakeprofile"           ,{ "qt"          ,"QMake Project File"        ,"Configuring" } },
-    {"application/vnd.qt.qmakeproincludefile"    ,{ "qt"          ,"QMake Include File"        ,"Editing"     } },
+    {"application/vnd.qt.qmakeprofile"           ,{ "qmake"       ,"QMake Project File"        ,"Configuring" } },
+    {"application/vnd.qt.qmakeproincludefile"    ,{ "qmake_pri"   ,"QMake Include File"        ,"Editing"     } },
     {"application/vnd.qt.qmakeprostashfile"      ,{ "qt"          ,"QMake Stash File"          ,"Editing"     } },
     {"text/x-cmake-project"                      ,{ "cmake"       ,"CMake Project File"        ,"Editing"     } },
     {"text/x-makefile"                           ,{ "gnu"         ,"GNU Makefile"              ,"Editing"     } },
@@ -119,7 +119,6 @@ void QtCreatorDRPCPlugin::initializeDiscordRichPresence(const char* application_
     DiscordEventHandlers discord_event_handlers {};
     ZeroMemory(&discord_event_handlers, sizeof(discord_event_handlers));
     Discord_Initialize(application_id, &discord_event_handlers, 1, nullptr);
-    drpcInitializedTimestamp = std::time(nullptr);
 }
 
 void QtCreatorDRPCPlugin::setDrpcNotEditingState() {
@@ -129,7 +128,7 @@ void QtCreatorDRPCPlugin::setDrpcNotEditingState() {
     presence.largeImageKey = "qt";
     presence.largeImageText = "Qt Creator";
     presence.details = "Not Currently Editing Anything";
-    presence.startTimestamp = drpcInitializedTimestamp;
+    presence.startTimestamp = drpcActivatedTimestamp;
     Discord_UpdatePresence(&presence);
 }
 
@@ -151,18 +150,21 @@ void QtCreatorDRPCPlugin::syncDrpcToCurrentEditorState() {
 
     QDiscordRichPresence presence {};
 
-    presence.Details        = QString { "%1 %2" }.arg(rpc_file_descriptor.WorkingVerb, rpc_file_descriptor.Description);
-    presence.State          = QString { "%1/%2" }.arg(active_file_path.fileName(), active_project_name);
+    presence.Details        = QString { "Working on %1" }.arg(active_project_name);
+    presence.State          = QString { "%1 %2" }.arg(rpc_file_descriptor.WorkingVerb, active_file_path.fileName());
     presence.LargeImageKey  = rpc_file_descriptor.ImageKey;
-    presence.LargeImageText = rpc_file_descriptor.WorkingVerb + " " + active_file_path.fileName() + " since " + QString::number(timeSpentOnCurrentEditor) + " seconds  (" + active_file_mime + ")";
+    // presence.LargeImageText = rpc_file_descriptor.WorkingVerb + " " + active_file_path.fileName() + " since " + QString::number(timeSpentOnCurrentEditor) + " seconds  (" + active_file_mime + ")";
+    //presence.LargeImageText = rpc_file_descriptor.Description + " (" + active_file_mime + ") since " + QString::number(timeSpentOnCurrentEditor) + " seconds";
+    presence.LargeImageText = rpc_file_descriptor.Description;
     presence.SmallImageKey  = "qtcircle";
     presence.SmallImageText = active_project_name;
-    presence.StartTimestamp = drpcInitializedTimestamp;
+    presence.StartTimestamp = drpcActivatedTimestamp;
 
     presence.UpdateRichPresence();
 }
 
-void QtCreatorDRPCPlugin::connectSyncSignals() {
+void QtCreatorDRPCPlugin::activateDiscordRichPresence() {
+    deactivateDiscordRichPresence();
     setDrpcNotEditingState();
 
     syncSignalConnections = {
@@ -196,21 +198,22 @@ void QtCreatorDRPCPlugin::connectSyncSignals() {
             syncDrpcToCurrentEditorState();
         }),
 
-        connect(drpcSyncTimer, &QTimer::timeout, [&]() -> void {
+        connect(&drpcSyncTimer, &QTimer::timeout, [&]() -> void {
             ++timeSpentOnCurrentEditor;
             syncDrpcToCurrentEditorState();
         })
     };
 
-    drpcSyncTimer->start(1000);
+    drpcSyncTimer.start(1000);
+    drpcActivatedTimestamp = std::time(nullptr);
 }
 
-void QtCreatorDRPCPlugin::disconnectSyncSignals() {
+void QtCreatorDRPCPlugin::deactivateDiscordRichPresence() {
     for(const QMetaObject::Connection& connection : syncSignalConnections) {
         disconnect(connection);
     }
 
-    drpcSyncTimer->stop();
+    drpcSyncTimer.stop();
     Discord_ClearPresence();
 }
 
@@ -227,20 +230,20 @@ void QtCreatorDRPCPlugin::initializeControlMenu() {
                                             Core::Context { Core::Constants::C_GLOBAL })
     };
 
-    Core::Command* drpc_control_stop__command {
+    Core::Command* drpc_control_stop_command {
         Core::ActionManager::registerAction(drpc_control_stop_action,
                                             GLOBAL_DRPC_CONTROL_MENU_STOP_ACTION_ID,
                                             Core::Context { Core::Constants::C_GLOBAL })
     };
 
     connect(drpc_control_start_action, &QAction::triggered,
-            this,                      &QtCreatorDRPCPlugin::connectSyncSignals);
+            this,                      &QtCreatorDRPCPlugin::activateDiscordRichPresence);
 
     connect(drpc_control_stop_action,  &QAction::triggered,
-            this,                      &QtCreatorDRPCPlugin::disconnectSyncSignals);
+            this,                      &QtCreatorDRPCPlugin::deactivateDiscordRichPresence);
 
     drpc_control_menu->addAction(drpc_control_start_command);
-    drpc_control_menu->addAction(drpc_control_stop__command);
+    drpc_control_menu->addAction(drpc_control_stop_command);
 
     Core::ActionManager::actionContainer(Core::Constants::M_TOOLS)->addMenu(drpc_control_menu);
 }
@@ -251,7 +254,7 @@ bool QtCreatorDRPCPlugin::initialize(const QStringList& arguments, QString* erro
 
     initializeDiscordRichPresence(GLOBAL_DISCORD_APPLICATION_ID);
     initializeControlMenu();
-    connectSyncSignals();
+    activateDiscordRichPresence();
 
     return true;
 }
@@ -266,14 +269,15 @@ ExtensionSystem::IPlugin::ShutdownFlag QtCreatorDRPCPlugin::aboutToShutdown() {
 
 QtCreatorDRPCPlugin::QtCreatorDRPCPlugin()
     :
-      timeSpentOnCurrentEditor { NULL },
-      drpcSyncTimer { new QTimer { this } }
+      drpcActivatedTimestamp      { NULL                },
+      timeSpentOnCurrentEditor    { NULL                }
 {
 
 }
 
 QtCreatorDRPCPlugin::~QtCreatorDRPCPlugin() {
-    delete drpcSyncTimer;
+    deactivateDiscordRichPresence();
+    Discord_Shutdown();
 }
 
 };

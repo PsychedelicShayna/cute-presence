@@ -13,7 +13,7 @@ extensions:list = [
     ".rb",    ".rs",   ".js",    ".css",
     ".html",  ".lua",  ".java",  ".asm",
     ".json",  ".xml",  ".yaml",  ".ini",
-    ".txt",   ".md"
+    ".txt",   ".md",   ".cs"
 ]
 
 filenames:list = [

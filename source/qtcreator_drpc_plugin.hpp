@@ -18,8 +18,8 @@
 #include <projectexplorer/project.h>
 
 #include <QtWidgets/QMessageBox>
-#include <QtWidgets/QAction>
 #include <QtWidgets/QMenu>
+#include <QtGui/QAction>
 
 #include <functional>
 #include <iostream>
@@ -32,7 +32,6 @@ namespace QtCreatorDRPC {
 constexpr const char* GLOBAL_DRPC_CONTROL_MENU_ID                 { "QtCreatorDRPC.Menu"         };
 constexpr const char* GLOBAL_DRPC_CONTROL_MENU_START_ACTION_ID    { "QtCreatorDRPC.Action.Start" };
 constexpr const char* GLOBAL_DRPC_CONTROL_MENU_STOP_ACTION_ID     { "QtCreatorDRPC.Action.Stop"  };
-
 constexpr const char* GLOBAL_DISCORD_APPLICATION_ID               { "937400240473006092"         };
 
 class QDiscordRichPresence {
@@ -77,12 +76,12 @@ protected:
         static QString OverrideMimeIfApplicable(const QString& mime, const Utils::FilePath& file_path);
     };
 
-    std::time_t drpcInitializedTimestamp;
+    std::time_t drpcActivatedTimestamp;
     void initializeDiscordRichPresence(const char* application_id);
 
     std::time_t timeSpentOnCurrentEditor;
 
-    QTimer* drpcSyncTimer;
+    QTimer drpcSyncTimer;
 
     QList<QMetaObject::Connection> syncSignalConnections;
 
@@ -90,8 +89,8 @@ protected slots:
     void setDrpcNotEditingState();
     void syncDrpcToCurrentEditorState();
 
-    void connectSyncSignals();
-    void disconnectSyncSignals();
+    void activateDiscordRichPresence();
+    void deactivateDiscordRichPresence();
 
     void initializeControlMenu();
 
