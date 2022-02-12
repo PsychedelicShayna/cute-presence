@@ -21,7 +21,7 @@ If you need the `.lib` files, you can either re-run the installer and select the
 
 **Qt Creator 6 NOTE**: In previous Qt Creator versions, the `.lib` filenames had the version number as a suffix, e.g. `Core5.lib` whereas in Qt Creator 6 - at least when using the "Qt Creator Plugin Development" feature to acquire the `.lib` files - that suffix is omitted, but the `.pri` files do not account for that omission. Also, the `.lib` files within the `/bin` folder are expected to be within the `/lib/qtcreator/plugins` folder, but they aren't. If you run into this problem when building, rather than renaming everything, I suggest you create a second `/lib` folder, e.g. `/symlib/lib/qtcreator/plugins` and then create symlinks to all of the `.lib` files from both `/lib/qtcreator/plugins` and `/bin` inside of `/symlib/lib/qtcreator/plugins`, including the version number suffix in the filenames for the symlinks. Doing this by hand is obviously quite tedious, but it should not be difficult to automate.
 
-Once you have all of the required files, edit `QtCreatorDRPC.pro` and ensure that these two variables point to the right locations.
+Once you have all of the required files, edit `QtCreatorDRPC.pro` and ensure that these two variables point to the right locations. Then all that's left is to build the plugin in Qt Creator.
 ```qmake
 # Qt Plugin Configuration ------------------------------
 IDE_SOURCE_TREE = C:/Qt/Tools/QtCreator/    # Ensure that this points to the root of the Qt Creator build containing the 
