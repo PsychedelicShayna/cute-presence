@@ -1,5 +1,5 @@
 # Qt Creator DRPC (Discord Rich Presence) Plugin
-This plugin adds Discord Rich Presence support to Qt Creator, with a growing list of recognized file types, and complete with icons!
+This plugin adds Discord Rich Presence support to Qt Creator, with a growing list of recognized file types, complete with icons for every type!
 
 ![](screenshots/demo_cycle_20fps.gif?raw=true)
 
