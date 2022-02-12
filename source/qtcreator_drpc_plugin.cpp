@@ -150,12 +150,10 @@ void QtCreatorDRPCPlugin::syncDrpcToCurrentEditorState() {
 
     QDiscordRichPresence presence {};
 
-    presence.Details        = QString { "Working on %1" }.arg(active_project_name);
-    presence.State          = QString { "%1 %2" }.arg(rpc_file_descriptor.WorkingVerb, active_file_path.fileName());
+    presence.Details        = QString { "%1 %2" }.arg(rpc_file_descriptor.WorkingVerb, rpc_file_descriptor.Description);
+    presence.State          = QString { "%1/%2" }.arg(active_file_path.fileName(), active_project_name);
+    presence.LargeImageText = rpc_file_descriptor.WorkingVerb + " " + active_file_path.fileName() + " since " + QString::number(timeSpentOnCurrentEditor) + " seconds  (" + active_file_mime + ")";
     presence.LargeImageKey  = rpc_file_descriptor.ImageKey;
-    // presence.LargeImageText = rpc_file_descriptor.WorkingVerb + " " + active_file_path.fileName() + " since " + QString::number(timeSpentOnCurrentEditor) + " seconds  (" + active_file_mime + ")";
-    //presence.LargeImageText = rpc_file_descriptor.Description + " (" + active_file_mime + ") since " + QString::number(timeSpentOnCurrentEditor) + " seconds";
-    presence.LargeImageText = rpc_file_descriptor.Description;
     presence.SmallImageKey  = "qtcircle";
     presence.SmallImageText = active_project_name;
     presence.StartTimestamp = drpcActivatedTimestamp;
