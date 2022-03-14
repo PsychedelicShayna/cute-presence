@@ -9,8 +9,15 @@ This plugin adds Discord Rich Presence support to Qt Creator, with a growing lis
 | Qt/QMake    | `.pro` `.pri` `.ui` `.qrc` `.qml` `.qss` 
 | C/C++       | `.cpp` `.hpp` `.cxx` `.hxx` `.cc` `.hh` `.c` `.h` `.i`
 | Other Langs | `.py` `.rb` `.rs` `.js` `.css` `.html` `.lua` `.java` `.asm`
-| Data & Text | `.json` `.xml` `.yaml` `.ini` `.txt` `.md`
+| Data & Text | `.json` `.xml` `.txt` `.md`
 | Misc        | `.gitignore` `Makefile` `CMakeLists.txt`
+
+
+## Planned File Types
+| Category    | Extensions |
+|-------------|------------|
+| Data & Text | `.yaml` `.ini`
+
 
 ## Building
 You will need a build of Qt Creator complete with the project include `.pri` files at the root of the build, the source code `/src` folder, the `.pri` files inside of the `/src` folder, and the `.lib` files inside of `/lib/qtcreator/plugins` and `/bin` that correspond to the Qt Creator DLLs stored in the same folders (e.g. `Core.lib`:`Core.dll`). If you've installed Qt Creator using the official installer, then you're most likely lacking the `/src` folder and `.pri` files, and might or might not have the `.lib` files depending on whether or not you selected "Qt Creator Plugin Development" as one of the features during the installation process.
