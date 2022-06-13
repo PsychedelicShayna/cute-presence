@@ -1,13 +1,3 @@
-/*
-
-!.gitignore
-!README.md
-!LICENSE
-
-!source/
-!dependencies/
-!screenshots/
-!testfiles/
-
-!*.pro
-!*.in
+*.user
+builds
+resources
